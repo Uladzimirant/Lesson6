@@ -69,5 +69,9 @@ namespace Lesson6.ProductsStruct
         {
             products.Where(p => p.Name == productName).First().Amount = newAmount;
         }
+        public void Clear()
+        {
+            products.Clear();
+        }
     }
 }

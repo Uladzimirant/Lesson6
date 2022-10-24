@@ -156,6 +156,11 @@ namespace Lesson6
                 }, $"Lists products of type {typeName} (using enum in structs)");
             }
 
+            handler.RegisterCommand("clear", () =>
+            {
+                if (!useStruct) products.Clear(); else productsStruct.Clear();
+            }, "Clears current product list");
+
             handler.RegisterCommand("switch", () =>
             {
                 useStruct = !useStruct;

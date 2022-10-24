@@ -25,6 +25,15 @@ namespace Lesson6.Products
 
         private HashSet<Product> products = new HashSet<Product>(new ProductNameComparer());
 
+        public ProductBasket(){ }
+        public ProductBasket(IEnumerable<Product> products)
+        {
+            foreach (var product in products)
+            {
+                Add(product);
+            }
+        }
+
         public decimal? GetFullPrice()
         {
             return products.Aggregate(decimal.Zero, (sum, prod) => sum + prod.Price * Convert.ToDecimal(prod.Amount));
@@ -80,6 +89,10 @@ namespace Lesson6.Products
         public void Remove(Product p)
         {
             Remove(p.Name);
+        }
+        public void Clear()
+        {
+            products.Clear();
         }
         public void SetAmount(string productName, uint newAmount)
         {

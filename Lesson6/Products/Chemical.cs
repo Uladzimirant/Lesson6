@@ -23,6 +23,8 @@ namespace Lesson6.Products
             Type = ProductType.CHEMICAL;
         }
 
+        public Chemical(string name, decimal price, float amount = 0.0f) : this(name, price, DangerLevelType.SAFE, amount) {}
+
         public override string? ToString()
         {
             return base.ToString() + $", level of danger: {DangerLevel}";
