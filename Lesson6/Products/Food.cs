@@ -9,9 +9,10 @@ namespace Lesson6.Products
     public class Food : Product
     {
         public uint ExpirationTime { get; private set; }
-        public Food(string name, decimal price, uint amount, uint expirationTime) : base(name, price, amount)
+        public Food(string name, decimal price, uint expirationTime, float amount = 0.0f) : base(name, price, amount)
         {
             ExpirationTime = expirationTime;
+            Type = ProductType.FOOD;
         }
 
         public override string? ToString()

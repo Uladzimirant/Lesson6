@@ -6,24 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.Products
+namespace Lesson6.ProductsStruct
 {
     public class ProductBasket
     {
-        private class ProductNameComparer : EqualityComparer<Product>
-        {
-            public override bool Equals(Product? x, Product? y)
-            {
-                return EqualityComparer<string>.Default.Equals(x?.Name, y?.Name);
-            }
-
-            public override int GetHashCode([DisallowNull] Product obj)
-            {
-                return obj.Name.GetHashCode();
-            }
-        }
-
-        private HashSet<Product> products = new HashSet<Product>(new ProductNameComparer());
+        private List<IProduct> products = new List<IProduct>();
 
         public decimal? GetFullPrice()
         {
@@ -39,11 +26,11 @@ namespace Lesson6.Products
         }
 
         //Planned private but why not make it public
-        public string ListProductsByCondition(Func<Product, bool> condition)
+        public string ListProductsByCondition(Func<IProduct, bool> condition)
         {
             if (products.Count == 0) return "There is no products" + Environment.NewLine;
             StringBuilder b = new StringBuilder();
-            foreach (Product product in products)
+            foreach (IProduct product in products)
             { 
                 if (condition.Invoke(product))
                 {
@@ -52,7 +39,7 @@ namespace Lesson6.Products
             };
             return b.ToString();
         }
-        public string ListProductsByType(Product.ProductType e)
+        public string ListProductsByType(IProduct.ProductType e)
         {
             return ListProductsByCondition(product => product.Type.Equals(e));
         }
@@ -62,12 +49,13 @@ namespace Lesson6.Products
             return ListProductsByCondition(product => product is T);
         }
         
-        public void Add(Product p)
+        public void Add(IProduct p)
         {
-            if (products.TryGetValue(p, out Product? existingProduct))
+            IProduct? elem = products.Find(e => e.Name.Equals(p.Name));
+            if (elem != null)
             {
-                existingProduct.Amount += p.Amount;
-            } 
+                elem.Amount += p.Amount;
+            }
             else
             {
                 products.Add(p);
@@ -75,11 +63,7 @@ namespace Lesson6.Products
         }
         public void Remove(string productName)
         {
-            products.RemoveWhere(p => p.Name == productName);
-        }
-        public void Remove(Product p)
-        {
-            Remove(p.Name);
+            products.RemoveAt(products.FindIndex(p => p.Name == productName));
         }
         public void SetAmount(string productName, uint newAmount)
         {
