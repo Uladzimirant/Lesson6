@@ -39,6 +39,8 @@ namespace Lesson6.ProductsStruct
             _amount = amount;
             Type = IProduct.ProductType.CHEMICAL;
         }
+        public Chemical(Chemical other) : this(other.Name, other.Price, other.DangerLevel, other.Amount) { }
+        public Chemical(Chemical other, float amount) : this(other.Name, other.Price, other.DangerLevel, amount) { }
 
         public override string? ToString()
         {

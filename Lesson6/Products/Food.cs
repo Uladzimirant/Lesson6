@@ -14,6 +14,8 @@ namespace Lesson6.Products
             ExpirationTime = expirationTime;
             Type = ProductType.FOOD;
         }
+        public Food(Food other) : this(other.Name, other.Price, other.ExpirationTime, other.Amount) { }
+        public Food(Food other, float amount) : this(other.Name, other.Price, other.ExpirationTime, amount) { }
 
         public override string? ToString()
         {

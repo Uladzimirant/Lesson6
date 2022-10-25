@@ -19,6 +19,8 @@ namespace Lesson6.Products
             Power = power;
             Type = ProductType.ELECTRICAL_APPLIANCE;
         }
+        public ElectricalAppliance(ElectricalAppliance other) : this(other.Name, other.Price, other.Voltage, other.Amperage, other.Power, (uint)other.Amount) { }
+        public ElectricalAppliance(ElectricalAppliance other, uint amount) : this(other.Name, other.Price, other.Voltage, other.Amperage, other.Power, amount) { }
 
         public override string? ToString()
         {

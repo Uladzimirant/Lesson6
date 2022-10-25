@@ -32,18 +32,18 @@ namespace Lesson6
             {
                 {
                     var p = product as Food;
-                    if (p != null) return new Food(p.Name, p.Price, p.ExpirationTime, amount);
+                    if (p != null) return new Food(p, amount);
                 }
                 {
                     var p = product as ElectricalAppliance;
-                    if (p != null) return new ElectricalAppliance(p.Name, p.Price, p.Voltage, p.Amperage, p.Power,
+                    if (p != null) return new ElectricalAppliance(p,
                         Math.Abs(amount - Math.Round(amount)) < 0.01 ? 
                         Convert.ToUInt32(amount) : 
                         throw new MessageException("Devices cannot be divided (their amount must be int)"));
                 }
                 {
                     var p = product as Chemical;
-                    if (p != null) return new Chemical(p.Name, p.Price, p.DangerLevel, amount);
+                    if (p != null) return new Chemical(p, amount);
                 }
             }
             throw new MessageException("Choose allowed product");

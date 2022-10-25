@@ -31,7 +31,8 @@ namespace Lesson6.ProductsStruct
             ExpirationTime = expirationTime;
             Type = IProduct.ProductType.FOOD;
         }
-
+        public Food(Food other) : this(other.Name, other.Price, other.ExpirationTime, other.Amount) { }
+        public Food(Food other, float amount) : this(other.Name, other.Price, other.ExpirationTime, amount) { }
         public override string? ToString()
         {
             return Name + " - " + Amount.ToString() + " for " + Price.ToString() + " BYN" + $", {ExpirationTime} day{(ExpirationTime > 1 ? "s" : "")}";

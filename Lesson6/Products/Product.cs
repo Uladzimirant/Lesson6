@@ -35,6 +35,9 @@ namespace Lesson6.Products
             Amount = amount;
             Type = ProductType.GENERAL;
         }
+        public Product(Product other) : this(other.Name, other.Price, other.Amount) { }
+        
+        public Product(Product other, float amount) : this(other.Name, other.Price, amount) { }
 
         public override string? ToString()
         {

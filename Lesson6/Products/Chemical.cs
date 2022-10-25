@@ -24,7 +24,8 @@ namespace Lesson6.Products
         }
 
         public Chemical(string name, decimal price, float amount = 0.0f) : this(name, price, DangerLevelType.SAFE, amount) {}
-
+        public Chemical(Chemical other) : this(other.Name,other.Price,other.DangerLevel,other.Amount) {}
+        public Chemical(Chemical other, float amount) : this(other.Name, other.Price, other.DangerLevel, amount) { }
         public override string? ToString()
         {
             return base.ToString() + $", level of danger: {DangerLevel}";
