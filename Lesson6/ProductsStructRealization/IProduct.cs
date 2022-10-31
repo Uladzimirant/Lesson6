@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.ProductsStruct
+namespace Lesson6.ProductsStructRealization
 {
     /* This task is terrible, doing it with structs is painful, they cannot inherit, why does I must do it like that */
     public interface IProduct

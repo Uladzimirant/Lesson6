@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CMDMenu;
-using Lesson6.Products;
+using Lesson6.ProductsClassRealization;
 
 namespace Lesson6
 {
     /* This class list avaiable products that you can put in the basket,
      * it stores information about products, for example name, price and expiration date for food
      */
-    internal class ProductList
+    internal class ProductsChoiceClassRealization
     {
         Dictionary<string, Product> _allowedProducts;
 
-        public ProductList(IEnumerable<Product> list)
+        public ProductsChoiceClassRealization(IEnumerable<Product> list)
         {
             _allowedProducts = list.ToDictionary(p => p.Name.ToLower());
         }

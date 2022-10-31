@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.Products
+namespace Lesson6.ProductsClassRealization
 {
     public class ProductBasket
     {
@@ -34,12 +34,14 @@ namespace Lesson6.Products
             }
         }
 
+
         public decimal? GetFullPrice()
         {
             return products.Aggregate(decimal.Zero, (sum, prod) => sum + prod.Price * Convert.ToDecimal(prod.Amount));
         }
 
-        public string ListProducts()
+
+        public string PrintProducts()
         {
             if (products.Count == 0) return "There is no products" + Environment.NewLine;
             StringBuilder b = new StringBuilder();
@@ -47,28 +49,42 @@ namespace Lesson6.Products
             return b.ToString();
         }
 
-        //Planned private but why not make it public
-        public string ListProductsByCondition(Func<Product, bool> condition)
+
+        public List<Product> GetListOfProductsByCondition(Func<Product, bool> condition)
         {
-            if (products.Count == 0) return "There is no products" + Environment.NewLine;
-            StringBuilder b = new StringBuilder();
+            List<Product> list = new List<Product>();
             foreach (Product product in products)
-            { 
+            {
                 if (condition.Invoke(product))
                 {
-                    b.AppendLine(product.ToString());
+                    list.Add(product);
                 }
             };
-            return b.ToString();
-        }
-        public string ListProductsByType(Product.ProductType e)
-        {
-            return ListProductsByCondition(product => product.Type.Equals(e));
+            return list;
         }
 
-        public string ListProductsByClass<T>()
+
+        public List<T> GetListOfProductsByClass<T>()
         {
-            return ListProductsByCondition(product => product is T);
+            return GetListOfProductsByCondition(e => e is T).Cast<T>().ToList();
+        }
+
+
+        public string PrintProductsByCondition(Func<Product, bool> condition)
+        {
+            var list = GetListOfProductsByCondition(condition);
+            if (list.Count == 0) return "There is no products by such condition" + Environment.NewLine;
+            return string.Join(Environment.NewLine, list);
+        }
+
+
+        public string PrintProductsByType(Product.ProductType e)
+        {
+            return PrintProductsByCondition(product => product.Type.Equals(e));
+        }
+        public string PrintProductsByClass<T>()
+        {
+            return PrintProductsByCondition(product => product is T);
         }
         
         public void Add(Product p)

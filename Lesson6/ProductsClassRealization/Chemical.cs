@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.Products
+namespace Lesson6.ProductsClassRealization
 {
     public class Chemical : Product
     {

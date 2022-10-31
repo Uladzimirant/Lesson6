@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.ProductsStruct
+namespace Lesson6.ProductsStructRealization
 {
     public struct Food : IProduct
     {

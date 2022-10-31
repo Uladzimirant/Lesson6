@@ -1,5 +1,5 @@
 ﻿using CMDMenu;
-using Lesson6.ProductsStruct;
+using Lesson6.ProductsStructRealization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace Lesson6
 {
     /* Same description as ProductList */
-    internal class ProductListStruct
+    internal class ProductsChoiceStructRealization
     {
         Dictionary<string, IProduct> _allowedProducts;
 
-        public ProductListStruct(IEnumerable<IProduct> list)
+        public ProductsChoiceStructRealization(IEnumerable<IProduct> list)
         {
             _allowedProducts = list.ToDictionary(p => p.Name.ToLower());
         }

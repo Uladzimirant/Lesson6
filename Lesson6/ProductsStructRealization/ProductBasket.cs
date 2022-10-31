@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lesson6.ProductsClassRealization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lesson6.ProductsStruct
+namespace Lesson6.ProductsStructRealization
 {
     public class ProductBasket
     {
@@ -17,7 +18,7 @@ namespace Lesson6.ProductsStruct
             return products.Aggregate(decimal.Zero, (sum, prod) => sum + prod.Price * Convert.ToDecimal(prod.Amount));
         }
 
-        public string ListProducts()
+        public string PrintProducts()
         {
             if (products.Count == 0) return "There is no products" + Environment.NewLine;
             StringBuilder b = new StringBuilder();
@@ -25,28 +26,42 @@ namespace Lesson6.ProductsStruct
             return b.ToString();
         }
 
-        //Planned private but why not make it public
-        public string ListProductsByCondition(Func<IProduct, bool> condition)
+
+        public List<IProduct> GetListOfProductsByCondition(Func<IProduct, bool> condition)
         {
-            if (products.Count == 0) return "There is no products" + Environment.NewLine;
-            StringBuilder b = new StringBuilder();
+            List<IProduct> list = new List<IProduct>();
             foreach (IProduct product in products)
-            { 
+            {
                 if (condition.Invoke(product))
                 {
-                    b.AppendLine(product.ToString());
+                    list.Add(product);
                 }
             };
-            return b.ToString();
-        }
-        public string ListProductsByType(IProduct.ProductType e)
-        {
-            return ListProductsByCondition(product => product.Type.Equals(e));
+            return list;
         }
 
-        public string ListProductsByClass<T>()
+
+        public List<T> GetListOfProductsByClass<T>()
         {
-            return ListProductsByCondition(product => product is T);
+            return GetListOfProductsByCondition(e => e is T).Cast<T>().ToList();
+        }
+
+
+        //Planned private but why not make it public
+        public string PrintProductsByCondition(Func<IProduct, bool> condition)
+        {
+            var list = GetListOfProductsByCondition(condition);
+            if (list.Count == 0) return "There is no products by this condition" + Environment.NewLine;
+            return string.Join(Environment.NewLine, GetListOfProductsByCondition(condition));
+        }
+        public string PrintProductsByType(IProduct.ProductType e)
+        {
+            return PrintProductsByCondition(product => product.Type.Equals(e));
+        }
+
+        public string PrintProductsByClass<T>()
+        {
+            return PrintProductsByCondition(product => product is T);
         }
         
         public void Add(IProduct p)

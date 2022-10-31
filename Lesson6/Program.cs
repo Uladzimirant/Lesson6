@@ -1,7 +1,7 @@
 ﻿using CMDMenu;
-using Lesson6.Products;
+using Lesson6.ProductsClassRealization;
 using System.Linq;
-using static Lesson6.Products.Product;
+using static Lesson6.ProductsClassRealization.Product;
 
 namespace Lesson6
 {
@@ -15,8 +15,10 @@ namespace Lesson6
     {
         static CMDHandler handler = new CMDHandler();
         static ProductBasket products = new ProductBasket();
-        static ProductsStruct.ProductBasket productsStruct = new ProductsStruct.ProductBasket();
+        static ProductsStructRealization.ProductBasket productsStruct = new ProductsStructRealization.ProductBasket();
         static bool useStruct = false;
+
+
         static (string name, decimal price, uint days)[] foodArray = new (string name, decimal price, uint days)[]
         {
             ("Apple", 1.57m, 3),
@@ -25,6 +27,8 @@ namespace Lesson6
             ("Meat", 12.8m, 2),
             ("Milk", 2.05m, 4)
         };
+
+
         static (string name, decimal price, float voltage, float amperage, float power)[] ellectricalArray =
             new (string name, decimal price, float voltage, float amperage, float power)[]
         {
@@ -33,6 +37,8 @@ namespace Lesson6
             ("Charger", 20.5m, 220, 2, 25),
             ("Headphones", 18.9m, 15, 0.5f, 8),
         };
+
+
         static (string name, decimal price, string dangerLevel)[] chemicalArray = new
             (string name, decimal price, string dangerLevel)[]
         {
@@ -41,19 +47,23 @@ namespace Lesson6
             ("Detergent", 19.9m, "SLIGHT"),
             ("Acid", 80m, "EXTREME")
         };
-        static ProductList productList = new ProductList(
+
+
+        static ProductsChoiceClassRealization productList = new ProductsChoiceClassRealization(
             foodArray.Select(e => new Food(e.name, e.price, e.days) as Product).
             Concat(ellectricalArray.Select(e => new ElectricalAppliance(e.name, e.price,e.voltage,e.amperage,e.power))).
             Concat(chemicalArray.Select(e => new Chemical(e.name,e.price,Enum.Parse<Chemical.DangerLevelType>(e.dangerLevel))))
             );
-        static ProductListStruct productListStruct = new ProductListStruct(
-            foodArray.Select(e => new ProductsStruct.Food(e.name, e.price, e.days) as ProductsStruct.IProduct).
+
+
+        static ProductsChoiceStructRealization productListStruct = new ProductsChoiceStructRealization(
+            foodArray.Select(e => new ProductsStructRealization.Food(e.name, e.price, e.days) as ProductsStructRealization.IProduct).
             Concat(ellectricalArray.Select(
-                e => new ProductsStruct.ElectricalAppliance(e.name, e.price, e.voltage, e.amperage, e.power)
-                as ProductsStruct.IProduct)).
+                e => new ProductsStructRealization.ElectricalAppliance(e.name, e.price, e.voltage, e.amperage, e.power)
+                as ProductsStructRealization.IProduct)).
             Concat(chemicalArray.Select(
-                e => new ProductsStruct.Chemical(e.name, e.price, Enum.Parse<ProductsStruct.Chemical.DangerLevelType>(e.dangerLevel))
-                as ProductsStruct.IProduct))
+                e => new ProductsStructRealization.Chemical(e.name, e.price, Enum.Parse<ProductsStructRealization.Chemical.DangerLevelType>(e.dangerLevel))
+                as ProductsStructRealization.IProduct))
             );
 
 
@@ -79,6 +89,8 @@ namespace Lesson6
                 productsStruct.Add(productListStruct.Create("Detergent", 1.5f));
             }
         }
+
+
         public static void AskAdd()
         {
             string[] input = handler.AskForInput("Enter product name to add and amount").Split();
@@ -97,6 +109,8 @@ namespace Lesson6
                 throw new MessageException("Enter correct values, couldn't convert: " + e.Message);
             }
         }
+
+
         public static void Main(string[] args)
         {
             handler.RegisterCommand("add", AskAdd, "Adds one of allowed products to basket");
@@ -116,8 +130,8 @@ namespace Lesson6
             handler.RegisterCommand($"list", () =>
             {
                 Console.Write(!useStruct ?
-                    products.ListProducts() :
-                    productsStruct.ListProducts());
+                    products.PrintProducts() :
+                    productsStruct.PrintProducts());
             }, "Lists all products");
 
 
@@ -128,7 +142,7 @@ namespace Lesson6
                 handler.RegisterCommand($"list type {typeName.ToLower()}", () =>
                 {
                     if (useStruct) throw new MessageException("This command for classes use only");
-                    Console.Write(products.ListProductsByType(ptype));
+                    Console.Write(products.PrintProductsByType(ptype));
                 }, $"Lists products of type {typeName} (using enum)");
             }
             foreach (Type ctype in new Type[] { typeof(Food), typeof(ElectricalAppliance), typeof(Chemical) })
@@ -138,21 +152,21 @@ namespace Lesson6
                 {
                     if (useStruct) throw new MessageException("This command for classes use only");
                     Console.Write(
-                        ctype == typeof(Food) ? products.ListProductsByClass<Food>() :
-                        ctype == typeof(ElectricalAppliance) ? products.ListProductsByClass<ElectricalAppliance>() :
-                        ctype == typeof(Chemical) ? products.ListProductsByClass<Chemical>() :
+                        ctype == typeof(Food) ? products.PrintProductsByClass<Food>() :
+                        ctype == typeof(ElectricalAppliance) ? products.PrintProductsByClass<ElectricalAppliance>() :
+                        ctype == typeof(Chemical) ? products.PrintProductsByClass<Chemical>() :
                         "No such class");
                 }, $"Lists products of class {typeName} (using is (product is ClassName))");
             }
-            foreach (ProductsStruct.IProduct.ProductType ptype in Enum.GetValues(typeof(ProductsStruct.IProduct.ProductType)))
+            foreach (ProductsStructRealization.IProduct.ProductType ptype in Enum.GetValues(typeof(ProductsStructRealization.IProduct.ProductType)))
             {
                 
-                if (ptype == ProductsStruct.IProduct.ProductType.GENERAL) continue;
+                if (ptype == ProductsStructRealization.IProduct.ProductType.GENERAL) continue;
                 string typeName = ptype.ToString().ToLower();
                 handler.RegisterCommand($"list struct {typeName.ToLower()}", () =>
                 {
                     if (!useStruct) throw new MessageException("This command for structs use only");
-                    Console.Write(productsStruct.ListProductsByType(ptype));
+                    Console.Write(productsStruct.PrintProductsByType(ptype));
                 }, $"Lists products of type {typeName} (using enum in structs)");
             }
 
